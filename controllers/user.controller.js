@@ -91,7 +91,23 @@ const loginUser = (req,res,next) => {
     })
 }
 
+const currentUser = (req,res,next) => {
+    User.findById(req.user.id)
+    .then(user => {
+        const { name,email,avatar,bio,date,posts } = user;
+        res.json({
+            name,
+            email,
+            avatar,
+            bio,
+            date,
+            posts
+        });
+    })
+}
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    currentUser
 }
