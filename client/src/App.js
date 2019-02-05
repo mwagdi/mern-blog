@@ -1,25 +1,70 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import axios from 'axios';
+
 import './App.css';
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      name: "",
+      email: "",
+      password: "",
+      password2: "",
+      avatar: null,
+      users: []
+    }
+  }
+  componentDidMount(){
+    axios.get('api/users')
+    .then(response => this.setState({ users: response.data.users }))
+  }
+  handleSubmit = e => {
+    e.preventDefault();
+    let formData = new FormData();
+
+    formData.append('name',this.state.name);
+    formData.append('email',this.state.email);
+    formData.append('password',this.state.password);
+    formData.append('password2',this.state.password2);
+    formData.append('avatar', this.state.avatar, `${Date.now()}profile`);
+      axios.post('api/users/register', formData, {headers: { 'Content-Type': 'multipart/form-data' }})
+      .then(response => {
+        console.log(response);
+    })
+  }
   render() {
+    const { name,email,password,password2,users } = this.state;
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <form onSubmit={this.handleSubmit}>
+          <input
+          value={name}
+          onChange={e => this.setState({ name: e.target.value })}
+          type="text" />
+          <input
+          value={email}
+          onChange={e => this.setState({ email: e.target.value })}
+          type="email" />
+          <input
+          value={password}
+          onChange={e => this.setState({ password: e.target.value })}
+          type="password" />
+          <input
+          value={password2}
+          onChange={e => this.setState({ password2: e.target.value })}
+          type="password" />
+          <input
+          onChange={e => this.setState({ avatar: Array.from(e.target.files)[0]})}
+          type="file" />
+          <input type="submit" value="Submit"/>
+        </form>
+        {users.map((user,i) => (
+          <div key={i}>
+            {user.avatar ? (<img src={user.avatar}/>) : ""}
+            <p>{user.name}</p>
+          </div>
+        ))}
       </div>
     );
   }
