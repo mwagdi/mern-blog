@@ -12,7 +12,8 @@ class App extends Component {
       password: "",
       password2: "",
       avatar: null,
-      users: []
+      users: [],
+      media: []
     }
   }
   componentDidMount(){
@@ -32,6 +33,18 @@ class App extends Component {
       .then(response => {
         console.log(response);
     })
+  }
+  addFiles = e => {
+    let formData = new FormData();
+    Array.from(e.target.files).forEach(file => {
+      formData.append('src',file,`${Date.now()}${file.name}`)
+    })
+    
+    axios.post('api/media', formData, {headers: { 'Content-Type': 'multipart/form-data' }})
+      .then(response => {
+        console.log(response);
+    })
+    
   }
   render() {
     const { name,email,password,password2,users } = this.state;
@@ -59,6 +72,9 @@ class App extends Component {
           type="file" />
           <input type="submit" value="Submit"/>
         </form>
+        <input
+        onChange={this.addFiles}
+        type="file" name="img" multiple></input>
         {users.map((user,i) => (
           <div key={i}>
             {user.avatar ? (<img src={user.avatar}/>) : ""}

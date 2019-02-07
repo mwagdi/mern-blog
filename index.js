@@ -6,6 +6,7 @@ const passport = require('passport');
 require('dotenv').config();
 
 const users = require("./routes/api/user.routes");
+const media = require("./routes/api/media.routes");
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use(passport.initialize());
 require("./passport")(passport);
 
 app.use("/api/users", users);
+app.use("/api/media", media);
 
 app.use((err, req, res, next) => {
     console.log(err);
