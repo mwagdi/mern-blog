@@ -10,12 +10,20 @@ const PostSchema = new Schema({
         type: String,
         required: true
     },
+    top: {
+        type: Schema.Types.ObjectId,
+        ref: 'media'
+    },
     slug: {
         type: String
     },
     content: {
         type: String,
         required: true
+    },
+    status: {
+        type: Boolean,
+        default: false
     },
     date: {
         type: Date,
