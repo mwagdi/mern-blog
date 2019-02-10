@@ -24,6 +24,8 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+app.disable('etag');
+
 app.use(express.static(__dirname))
 app.use(
     bodyParser.urlencoded({

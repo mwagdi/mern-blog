@@ -16,7 +16,15 @@ const addPost = (req,res,next) => {
         .catch(err => console.log(err));
 }
 
+const editPost = (req,res,next) => {
+    Post.findOneAndUpdate(
+        {"_id": req.params.id},{$set: req.body}
+    )
+    .then(post => res.json(post))
+}
+
 module.exports = {
     listPosts,
-    addPost
+    addPost,
+    editPost
 }

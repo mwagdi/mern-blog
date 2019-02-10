@@ -21,7 +21,7 @@ const PostSchema = new Schema({
         type: String,
         required: true
     },
-    status: {
+    published: {
         type: Boolean,
         default: false
     },

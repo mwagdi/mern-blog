@@ -13,7 +13,6 @@ const listUsers = (req,res,next) => {
 }
 
 const registerUser = (req,res,next) => {
-    console.log(req.file)
     const { errors,isValid } = validateRegisterInput(req.body);
     if (!isValid) {
         return res.status(400).json(errors);
